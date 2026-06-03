@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Exercises from './pages/Exercises';
 import ScanFood from './pages/ScanFood';
 import ScanLabel from './pages/ScanLabel';
+import Layout from './components/Layout';
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/onboarding" />;
   }
 
-  return <>{children}</>;
+  return <Layout>{children}</Layout>;
 };
 
 function App() {
