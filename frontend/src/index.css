@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background text-white;
+}
+
+.card {
+  @apply bg-surface border border-neutral-800 rounded-xl p-4;
+}
+
+.btn-primary {
+  @apply bg-primary text-black font-bold py-2 px-4 rounded-lg hover:bg-yellow-400 transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-neutral-800 text-white font-bold py-2 px-4 rounded-lg hover:bg-neutral-700 transition-colors;
+}
+
+.input {
+  @apply bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white focus:outline-none focus:border-primary;
+}

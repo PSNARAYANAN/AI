@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  password        String
+  name            String?
+  goal            Goal?
+  currentWeight   Float?
+  targetWeight    Float?
+  height          Float?
+  age             Int?
+  gender          String?
+  activityLevel   ActivityLevel?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  dailyLogs       DailyLog[]
+  savedExercises  SavedExercise[]
+  scannedProducts ScannedProduct[]
+}
+
+enum Goal {
+  LOSE_WEIGHT
+  GAIN_WEIGHT
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  VERY_ACTIVE
+}
+
+model Exercise {
+  id                String          @id @default(uuid())
+  name              String
+  muscleGroup       MuscleGroup
+  difficulty        Difficulty
+  equipment         String
+  instructions      String // JSON stringified or comma separated if needed, but string array is not supported in all DBs. Prisma supports String[] for Postgres.
+  imageUrl          String?
+  commonMistakes    String
+  setsRecommendation String
+  repsRecommendation String
+  targetMuscle      String
+  savedBy           SavedExercise[]
+}
+
+enum MuscleGroup {
+  CHEST
+  BACK
+  SHOULDERS
+  ARMS
+  CORE
+  LEGS
+  FULL_BODY
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model SavedExercise {
+  id         String   @id @default(uuid())
+  userId     String
+  exerciseId String
+  user       User     @relation(fields: [userId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, exerciseId])
+}
+
+model DailyLog {
+  id               String   @id @default(uuid())
+  userId           String
+  date             DateTime @default(now())
+  caloriesConsumed Float    @default(0)
+  protein          Float    @default(0)
+  carbs            Float    @default(0)
+  fat              Float    @default(0)
+  fiber            Float    @default(0)
+  user             User     @relation(fields: [userId], references: [id])
+  meals            Meal[]
+
+  @@unique([userId, date])
+}
+
+model Meal {
+  id        String   @id @default(uuid())
+  logId     String
+  name      String
+  calories  Float
+  protein   Float
+  carbs     Float
+  fat       Float
+  fiber     Float
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  log       DailyLog @relation(fields: [logId], references: [id])
+}
+
+model ScannedProduct {
+  id              String   @id @default(uuid())
+  userId          String
+  name            String
+  score           Int
+  nutritionalInfo Json
+  advice          Json // Array of strings
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id])
+}
