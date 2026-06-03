@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
-import { Camera, Search, Dumbbell, History, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Camera, Search, Dumbbell, History } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -41,7 +42,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-4 pb-24 max-w-lg mx-auto">
+    <div className="p-4 max-w-lg mx-auto">
       <header className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl font-bold">Hello, {user?.name || 'User'}</h1>
@@ -146,13 +147,6 @@ const Dashboard = () => {
           <p className="text-secondary text-sm text-center py-4">No meals logged today</p>
         )}
       </div>
-
-      {/* Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-surface border-t border-neutral-800 p-4 flex justify-around items-center">
-        <Link to="/" className="text-primary"><Camera /></Link>
-        <Link to="/exercises" className="text-secondary"><Dumbbell /></Link>
-        <Link to="/onboarding" className="text-secondary"><Search /></Link>
-      </nav>
     </div>
   );
 };
